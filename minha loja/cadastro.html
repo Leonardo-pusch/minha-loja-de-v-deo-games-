@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cadastro - Join Games</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <img src="img/join-logo.png" alt="Join - games e eletrônicos" class="logo" />
+    <nav>
+      <a href="index.html">Home</a>
+    </nav>
+  </header>
+
+  <main>
+    <h2>Cadastro de Cliente</h2>
+    <form onsubmit="enviarFormulario(event)">
+      <input type="text" placeholder="Nome Completo" required />
+      <input type="email" placeholder="E-mail" required />
+      <input type="password" placeholder="Senha" required />
+      <input type="text" placeholder="CPF" required />
+      <input type="tel" placeholder="Telefone" required />
+      <input type="text" placeholder="Endereço completo" required />
+      
+      <h3>Produtos de interesse</h3>
+      <p>Selecione os produtos que você tem interesse:</p>
+      
+      <div class="produtos-cadastro">
+        <div class="produto-opcao" onclick="selecionarProduto(this)">
+          <img src="https://images.unsplash.com/photo-1606144042614-b2417e99c4e3?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="PlayStation 5" />
+          <p>PlayStation 5</p>
+        </div>
+        <div class="produto-opcao" onclick="selecionarProduto(this)">
+          <img src="https://images.unsplash.com/photo-1621259182978-fbf93132d53d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Xbox Series X" />
+          <p>Xbox Series X</p>
+        </div>
+        <div class="produto-opcao" onclick="selecionarProduto(this)">
+          <img src="https://images.unsplash.com/photo-1578303512597-81e6cc155b3e?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Nintendo Switch" />
+          <p>Nintendo Switch</p>
+        </div>
+        <div class="produto-opcao" onclick="selecionarProduto(this)">
+          <img src="https://images.unsplash.com/photo-1585770536735-27993a080586?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Notebook Gamer" />
+          <p>Notebook Gamer</p>
+        </div>
+        <div class="produto-opcao" onclick="selecionarProduto(this)">
+          <img src="https://images.unsplash.com/photo-1600080972464-8e5f35f63d08?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Smartphone" />
+          <p>Smartphone</p>
+        </div>
+        <div class="produto-opcao" onclick="selecionarProduto(this)">
+          <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Fones de Ouvido" />
+          <p>Fones de Ouvido</p>
+        </div>
+      </div>
+      
+      <button type="submit">Cadastrar</button>
+    </form>
+    <p id="mensagem"></p>
+  </main>
+
+  <script src="script.js"></script>
+  <p style="text-align: center; font-size: 0.8em; color: #666;">&copy; 2025 Join Games. Todos os direitos reservados. Rainan / Leo</p>
+</body>
+</html>

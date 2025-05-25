@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Finalizar Compra - Join Games</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .carrinho-item {
+      display: flex;
+      align-items: center;
+      background: #ffffff;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      padding: 1em;
+      margin-bottom: 1em;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .carrinho-item img {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 5px;
+      margin-right: 1em;
+    }
+    
+    .carrinho-info {
+      flex-grow: 1;
+    }
+    
+    .carrinho-preco {
+      font-weight: bold;
+      color: #009933;
+      font-size: 1.2em;
+    }
+    
+    .resumo {
+      background: #f9f9f9;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      padding: 1.5em;
+      margin-top: 2em;
+    }
+    
+    .total {
+      font-size: 1.5em;
+      font-weight: bold;
+      color: #009933;
+      margin-top: 1em;
+      text-align: right;
+    }
+    
+    .boas-vindas {
+      background-color: #e8f5e9;
+      padding: 1em;
+      border-radius: 8px;
+      margin-bottom: 2em;
+      border-left: 5px solid #009933;
+    }
+    
+    .metodo-pagamento {
+      margin: 2em 0;
+    }
+    
+    .opcoes-pagamento {
+      display: flex;
+      gap: 1em;
+      margin-top: 1em;
+    }
+    
+    .opcao-pagamento {
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      padding: 1em;
+      width: 120px;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color 0.3s;
+    }
+    
+    .opcao-pagamento:hover, .opcao-pagamento.selecionado {
+      border-color: #009933;
+    }
+    
+    .opcao-pagamento img {
+      height: 40px;
+      margin-bottom: 0.5em;
+    }
+    
+    .sem-produtos {
+      background-color: #fff3e0;
+      padding: 2em;
+      border-radius: 8px;
+      text-align: center;
+      margin: 2em 0;
+      border-left: 5px solid #ff9800;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <img src="img/join-logo.png" alt="Join - games e eletrônicos" class="logo" />
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="cadastro.html">Cadastro</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="boas-vindas">
+      <h2>Olá, <span id="nome-usuario">Cliente</span>!</h2>
+      <p>Confira os produtos selecionados e finalize sua compra.</p>
+    </div>
+    
+    <h2>Seu Carrinho</h2>
+    <div id="carrinho-container">
+      <!-- Os itens do carrinho serão inseridos aqui via JavaScript -->
+    </div>
+    
+    <div class="metodo-pagamento">
+      <h3>Forma de Pagamento</h3>
+      <div class="opcoes-pagamento">
+        <div class="opcao-pagamento" onclick="selecionarPagamento(this)">
+          <img src="https://cdn-icons-png.flaticon.com/512/196/196578.png" alt="Cartão de Crédito">
+          <p>Cartão de Crédito</p>
+        </div>
+        <div class="opcao-pagamento" onclick="selecionarPagamento(this)">
+          <img src="https://cdn-icons-png.flaticon.com/512/217/217853.png" alt="Boleto">
+          <p>Boleto</p>
+        </div>
+        <div class="opcao-pagamento" onclick="selecionarPagamento(this)">
+          <img src="https://cdn-icons-png.flaticon.com/512/6963/6963703.png" alt="Pix">
+          <p>Pix</p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="resumo">
+      <h3>Resumo do Pedido</h3>
+      <p>Subtotal: <span id="subtotal">R$ 0,00</span></p>
+      <p>Frete: <span id="frete">R$ 0,00</span></p>
+      <p class="total">Total: <span id="total">R$ 0,00</span></p>
+      <button onclick="finalizarCompra()">Finalizar Compra</button>
+    </div>
+  </main>
+
+  <script>
+    // Dados dos produtos (simulação de banco de dados)
+    const catalogoProdutos = {
+      "PlayStation 5": {
+        preco: 4500,
+        imagem: "https://images.unsplash.com/photo-1606144042614-b2417e99c4e3?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
+      },
+      "Xbox Series X": {
+        preco: 4200,
+        imagem: "https://images.unsplash.com/photo-1621259182978-fbf93132d53d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
+      },
+      "Nintendo Switch": {
+        preco: 2800,
+        imagem: "https://images.unsplash.com/photo-1578303512597-81e6cc155b3e?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
+      },
+      "Notebook Gamer": {
+        preco: 5500,
+        imagem: "https://images.unsplash.com/photo-1585770536735-27993a080586?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
+      },
+      "Smartphone": {
+        preco: 3200,
+        imagem: "https://images.unsplash.com/photo-1600080972464-8e5f35f63d08?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
+      },
+      "Fones de Ouvido": {
+        preco: 800,
+        imagem: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
+      }
+    };
+    
+    // Recupera dados do localStorage
+    const nomeUsuario = localStorage.getItem('nomeUsuario') || 'Cliente';
+    const produtosSelecionados = JSON.parse(localStorage.getItem('produtosSelecionados')) || [];
+    
+    // Atualiza nome do usuário na página
+    document.getElementById('nome-usuario').textContent = nomeUsuario;
+    
+    // Função para carregar produtos no carrinho
+    function carregarCarrinho() {
+      const carrinhoContainer = document.getElementById('carrinho-container');
+      carrinhoContainer.innerHTML = '';
+      
+      if (produtosSelecionados.length === 0) {
+        carrinhoContainer.innerHTML = `
+          <div class="sem-produtos">
+            <h3>Seu carrinho está vazio</h3>
+            <p>Volte para a página de cadastro e selecione alguns produtos.</p>
+            <button onclick="window.location.href='cadastro.html'">Voltar para Cadastro</button>
+          </div>
+        `;
+        atualizarResumo(0);
+        return;
+      }
+      
+      let subtotal = 0;
+      
+      produtosSelecionados.forEach(produto => {
+        if (catalogoProdutos[produto]) {
+          const preco = catalogoProdutos[produto].preco;
+          const imagem = catalogoProdutos[produto].imagem;
+          subtotal += preco;
+          
+          const itemHTML = `
+            <div class="carrinho-item">
+              <img src="${imagem}" alt="${produto}">
+              <div class="carrinho-info">
+                <h3>${produto}</h3>
+                <p>Quantidade: 1</p>
+              </div>
+              <div class="carrinho-preco">
+                R$ ${preco.toFixed(2).replace('.', ',')}
+              </div>
+            </div>
+          `;
+          
+          carrinhoContainer.innerHTML += itemHTML;
+        }
+      });
+      
+      atualizarResumo(subtotal);
+    }
+    
+    // Função para atualizar o resumo do pedido
+    function atualizarResumo(subtotal) {
+      const frete = subtotal > 0 ? 50 : 0;
+      const total = subtotal + frete;
+      
+      document.getElementById('subtotal').textContent = `R$ ${subtotal.toFixed(2).replace('.', ',')}`;
+      document.getElementById('frete').textContent = `R$ ${frete.toFixed(2).replace('.', ',')}`;
+      document.getElementById('total').textContent = `R$ ${total.toFixed(2).replace('.', ',')}`;
+    }
+    
+    // Função para selecionar método de pagamento
+    function selecionarPagamento(elemento) {
+      // Remove seleção anterior
+      document.querySelectorAll('.opcao-pagamento').forEach(el => {
+        el.classList.remove('selecionado');
+      });
+      
+      // Adiciona seleção ao elemento clicado
+      elemento.classList.add('selecionado');
+    }
+    
+    // Função para finalizar compra
+    function finalizarCompra() {
+      const metodoPagamento = document.querySelector('.opcao-pagamento.selecionado');
+      
+      if (!metodoPagamento) {
+        alert('Por favor, selecione um método de pagamento.');
+        return;
+      }
+      
+      if (produtosSelecionados.length === 0) {
+        alert('Seu carrinho está vazio. Adicione produtos antes de finalizar a compra.');
+        return;
+      }
+      
+      alert('Compra finalizada com sucesso! Obrigado por escolher a Join Games.');
+      window.location.href = 'index.html';
+    }
+    
+    // Carrega o carrinho quando a página é carregada
+    window.onload = carregarCarrinho;
+  </script>
+  <p style="text-align: center; font-size: 0.8em; color: #666;">&copy; 2025 Join Games. Todos os direitos reservados. Rainan / Leo</p>
+</body>
+</html>
